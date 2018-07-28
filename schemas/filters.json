@@ -1,0 +1,72 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for OneSaas Workflow Activity Filters",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/filters.json",
+            "enum": [
+                "https://sandbox.onesaas.com/schemas/1.0/filters.json"
+            ]
+        },
+        "Filters": {
+            "description": "List of filters to be applied.",
+            "type": "array",
+            "items": {
+                "description": "One set of Include or Exclude Filters.",
+                "properties": {
+                    "Type": {
+                        "description": "Type of Filter. Include - pass through the filter any entity that passes an Include filter. Exclude - exclude the entity if it passes an Exclude filter.",
+                        "type": "string",
+                        "default": "Include",
+                        "enum": [
+                            "Include",
+                            "Exclude"
+                        ]
+                    },
+                    "Fields": {
+                        "description": "List of fields that need to be passed (in an AND condition) for this filter to be evaluated as true.",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "Field": {
+                                    "description": "The field to be validated.",
+                                    "type": "string"
+                                },
+                                "Operator": {
+                                    "description": "Operator for the filter.",
+                                    "type": "string",
+                                    "enum": [
+                                        "in",
+                                        "notin",
+                                        ">=",
+                                        "=="
+                                    ]
+                                },
+                                "Values": {
+                                    "description": "List of Values that will pass the filter.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "required": [
+                                "Field",
+                                "Operator",
+                                "Values"
+                            ],
+                            "additionalItems": false
+                        }
+                    }
+                },
+                "required": [
+                    "Type",
+                    "Fields"
+                ]
+            },
+            "additionalItems": false
+        }
+    }
+}

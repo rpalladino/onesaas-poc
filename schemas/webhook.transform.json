@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas Resource Transformations",
+    "type": "object",
+    "properties": {
+        "system:retrieve": {
+            "$ref": "webhook.json#"
+        },
+        "system:create": {},
+        "system:update": {},
+        "system:delete": {}
+    },
+    "additionalProperties": {
+        "oneOf": [
+            {
+                "type": "object"
+            }
+        ]
+    }
+}

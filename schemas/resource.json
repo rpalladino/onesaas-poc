@@ -1,0 +1,189 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for OneSaas Resource",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/resource.json"
+        },
+        "Name": {
+            "description": "Id of this resource in format [type]:[name].",
+            "type": "string",
+            "pattern": "(contact|organization|contactwithorganization|transaction|product|transactionpayment|transactionshipment|financialaccount|classification|taxcode|job|productstock|configurationproperty|resource|resourcecustomization|webhook|entitysyncreport)\\:[a-z0-9-\\*]*"
+        },
+        "Accept": {
+            "$ref": "#/definitions/acceptheader"
+        },
+        "@@Config": {
+            "$ref": "#/definitions/config"
+        },
+        "system:retrieve": {
+            "description": "Implementation for the system:retrieve proxy operation.",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "transformer.json#/definitions/transform"
+                }
+            ],
+            // https://code.visualstudio.com/docs/languages/json#_define-snippets-in-json-schemas
+            // "defaultSnippets": [
+            //     {
+            //         "label": "Http Request",
+            //         "description": "Execute an Http request",
+            //         "body": {
+            //             "|http(GET)": {
+            //                 "Path": "$1"
+            //             }
+            //         }
+            //     }
+            // ],
+            "properties": {
+                "@@paging": {
+                    "description": "Type of pagination applies to this resource.",
+                    "oneOf": [
+                        {
+                            "description": "Simple Page by Page Pagination. You can now use $$Paging.Page, $$Paging.PageSize, $$Paging.FromOffset, $$Paging.ToOffset, $$Paging.IsFirstPage.",
+                            "properties": {
+                                "Type": {
+                                    "type": "string",
+                                    "default": "page",
+                                    "enum": [
+                                        "page",
+                                        "cursor",
+                                        "list"
+                                    ]
+                                },
+                                "Start": {
+                                    "description": "Index of the first page: 0 or 1 (0 by default).",
+                                    "type": "number",
+                                    "default": 0
+                                },
+                                "PageSize": {
+                                    "description": "Size of a page (50 by default).",
+                                    "type": "number",
+                                    "default": 50
+                                }
+                            }
+                        },
+                        {
+                            "description": "Cursor Pagination. You can now use $$Paging.Current, $$Paging.Next, $$Paging.IsFirstPage. Don't forget to set \"$$Paging.Next\": \"value of next page\".",
+                            "properties": {
+                                "Type": {
+                                    "type": "string",
+                                    "default": "cursor",
+                                    "enum": [
+                                        "page",
+                                        "cursor",
+                                        "list"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "description": "List based Pagination (for FTP). You can now use $$Paging.Current. Make sure you feed the pagination into !ftp(List, $$Paging).",
+                            "properties": {
+                                "Type": {
+                                    "type": "string",
+                                    "default": "list",
+                                    "enum": [
+                                        "page",
+                                        "cursor",
+                                        "list"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                "Output": {
+                    "type": [
+                        "object",
+                        "array",
+                        "string"
+                    ]
+                }
+            }
+        },
+        "system:create": {
+            "description": "Implementation for the system:create proxy operation.",
+            "type": "object",
+            "properties": {
+                "@@batchsize": {
+                    "description": "Size of a batch when executing the system:create. Default=1",
+                    "type": "number"
+                }
+            },
+            "additionalProperties": true
+        },
+        "system:searchmatch": {
+            "description": "Implementation for the system:searchmatch proxy operation.",
+            "type": "object"
+        },
+        "system:findexisting": {
+            "description": "Implementation for the system:findexisting proxy operation.",
+            "type": "object"
+        },
+        "system:update": {
+            "description": "Implementation for the system:create proxy operation.",
+            "type": "object"
+        },
+        "system:delete": {
+            "description": "Implementation for the system:delete proxy operation.",
+            "type": "object"
+        }
+    },
+    "definitions": {
+        "config": {
+            "description": "Custom configuration metadata for this resource.",
+            "type": "object",
+            "properties": {
+                "Schedule": {
+                    "description": "Default sync schedule override for this resource.",
+                    "type": "object",
+                    "properties": {
+                        "Frequency": {
+                            "description": "Maxiumum sync frequency in minutes. For example 120 means only sync this resource once every 2 hours.",
+                            "type": "number"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "acceptheader": {
+            "type": "string",
+            "default": "application/json; charset=utf-8",
+            "enum": [
+                "application/json; charset=utf-8",
+                "application/json; charset=utf-7",
+                "application/json",
+                "application/xml"
+            ]
+        },
+        "contenttypeheader": {
+            "type": "string",
+            "default": "application/json",
+            "enum": [
+                "application/json; charset=utf-8",
+                "application/json; charset=utf-7",
+                "application/json",
+                "application/xml",
+                "application/x-www-form-urlencoded"
+            ]
+        },
+        "keyvalue": {
+            "type": "object",
+            "additionalProperties": {
+                "type": [
+                    "string",
+                    "number",
+                    "boolean",
+                    "integer",
+                    "null"
+                ]
+            }
+        },
+        "requestformat": {}
+    }
+}

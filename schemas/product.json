@@ -1,0 +1,257 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas Product",
+    "type": "object",
+    "properties": {
+        "RemoteUid": {
+            "description": "Unique identifier of this entity in the remote system.",
+            "type": "string"
+        },
+        "Code": {
+            "description": "Unique Code/SKU of this product. OneSaas expects all produts to have a unique Code/SKU. If you have no Code, use Events>convert:success>product:generatesku event to generate a unique code.",
+            "type": "string"
+        },
+        "MasterCode": {
+            "description": "Master Code/SKU of the parent of this variant product.",
+            "type": "string"
+        },
+        "Name": {
+            "type": "string"
+        },
+        "Description": {
+            "type": "string"
+        },
+        "Barcode": {
+            "type": "string"
+        },
+        "ProductType": {
+            "type": "string",
+            "default": "Product",
+            "enum": [
+                "Product",
+                "ComboProduct",
+                "Voucher",
+                "Service"
+            ]
+        },
+        "ProductRoleType": {
+            "type": "string",
+            "default": "Standard",
+            "enum": [
+                "Standard",
+                "Shipping",
+                "Discount",
+                "Insurance",
+                "Surcharge",
+                "Service",
+                "GiftCertificate"
+            ]
+        },
+        "IsActive": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "IsBought": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "BuyingPrice": {
+            "oneOf": [
+                {
+                    "type": "number"
+                },
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
+        "IsBuyingPriceIncludingTax": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "BuyingTaxCode": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "taxcode.json#"
+                }
+            ]
+        },
+        "BuyingAccount": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "financialaccount.json#"
+                }
+            ]
+        },
+        "IsSold": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "SellingPrice": {
+            "oneOf": [
+                {
+                    "type": "number"
+                },
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
+        "IsSellingPriceIncludingTax": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "SellingTaxCode": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "taxcode.json#"
+                }
+            ]
+        },
+        "SellingAccount": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "financialaccount.json#"
+                }
+            ]
+        },
+        "IsInventoried": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "InventoryAssetAccount": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "financialaccount.json#"
+                }
+            ]
+        },
+        "CostOfGoodsAccount": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "financialaccount.json#"
+                }
+            ]
+        },
+        "Options": {
+            "$ref": "#/definitions/productoptions"
+        },
+        "MergeOptions": {
+            "description": "Options to help the match of this product with other known products.",
+            "type": "object",
+            "properties": {
+                "CodePrefix": {
+                    "type": "string",
+                    "description": "A prefix to be applied when a new Product Code is generated."
+                }
+            }
+        }
+    },
+    "patternProperties": {
+        "(Options)\\|.*": {
+            "type": "array",
+            "items": [
+                {
+                    "$ref": "#/definitions/productoptions"
+                }
+            ]
+        }
+    },
+    "additionalProperties": true,
+    "definitions": {
+        "productoptions": {
+            "description": "Product Variation Option (e.g. Size: XXL)",
+            "type": "array",
+            "items": {
+                "properties": {
+                    "Name": {
+                        "description": "Name of the product variation (e.g. Size)",
+                        "type": "string"
+                    },
+                    "Code": {
+                        "description": "Code of the product variation (e.g. Size)",
+                        "type": "string"
+                    },
+                    "Value": {
+                        "properties": {
+                            "Name": {
+                                "description": "Name of the product variation value (e.g. XXL)",
+                                "type": "string"
+                            },
+                            "Code": {
+                                "description": "Code of the product variation value (e.g. XXL)",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "Name"
+                        ]
+                    }
+                },
+                "required": [
+                    "Name"
+                ]
+            }
+        }
+    }
+}

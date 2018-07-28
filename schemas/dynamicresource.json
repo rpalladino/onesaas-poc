@@ -1,0 +1,63 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas Dynamically created Resource (e.g. Mailing list)",
+    "type": "object",
+    "properties": {
+        "RemoteUid": {
+            "description": "Unique identifier of this entity in the remote system.",
+            "type": "string"
+        },
+        "ReferenceType": {
+            "enum": [
+                "Contact"
+            ]
+        },
+        "Name": {
+            "type": "string"
+        },
+        "CustomFields": {
+            "$ref": "#/definitions/CustomFields"
+        }
+    },
+    "additionalProperties": {
+        "$ref": "#/definitions/CustomFields"
+    },
+    "required": [
+        "ReferenceType",
+        "Name"
+    ],
+    "definitions": {
+        "CustomFields": {
+            "description": "List of custom fields associated with this resource. For example you can have merge fields or custom properties.",
+            "type": "array",
+            "items": {
+                "properties": {
+                    "RemoteUid": {
+                        "type": "string"
+                    },
+                    "Name": {
+                        "type": "string"
+                    },
+                    "Code": {
+                        "type": "string"
+                    },
+                    "IsActive": {
+                        "default": true,
+                        "oneOf": [
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "RemoteUid",
+                    "Name"
+                ]
+            }
+        }
+    }
+}

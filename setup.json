@@ -1,0 +1,37 @@
+{
+	// Setup & UI Configuration for the spoke
+	// Docs: https://sandbox.onesaas.com/docs/#/docs/config/index
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/setup.json",
+	// Activities are reusable blocks of activities on your resources
+	// Docs: https://sandbox.onesaas.com/docs/#/api/config/activities:activities
+	"Activities": {
+		"pull-orders": {
+			"Resource": "transaction:orders",
+			"Direction": "Pull",
+			"Title": "When an <strong>Order</strong> is created in <strong>{{type.DisplayName}}</strong>",
+			"Ui": [
+				{
+					"section": "transactions",
+					"title": "Retrieve Orders from {{type.DisplayName}}"
+				}
+			]
+		}
+	},
+	// https://sandbox.onesaas.com/docs/#/docs/config/triggersandactions:triggers
+	"Triggers": {
+		"a-salesorder-iscreated": {
+			// Match this Trigger with any Action that is of type Sale/Invoice (e.g. Accounting)
+			"Match": {
+				"TransactionType": "Sale",
+				"TransactionStatusType": "Invoice"
+			},
+			"Activities": [
+				{
+					"Name": "pull-orders"
+				}
+			]
+		}
+	},
+	// https://sandbox.onesaas.com/docs/#/docs/config/triggersandactions:actions
+	"Actions": {}
+}

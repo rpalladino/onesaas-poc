@@ -1,0 +1,27 @@
+{
+	// Spoke wide ErrorHandler
+	// https://sandbox.onesaas.com/docs/#/docs/resources/errorhandling
+	// This is using the transform syntax (https://sandbox.onesaas.com/docs/#/docs/transform/index) to either raise an error
+	// or modify the payloads
+	// Incoming Variables
+	// $$ErrorCode          -- The HTTP error Code (e.g. 200, 500)
+	// $$ResourceName       -- Name of the resource
+	// $$SpokeName          -- NormalizedName of the spoke (spoke.json > NormalizedName)
+	// $$OperationName      -- Name of the operation (e.g. system:retrieve)
+	// $$Request            -- Complete JSON payload of the outgoing requests (for POST/PUT operations only)
+	// $$RequestHeaders     -- JSON format for the response headers ({ "Content-Type": "application/json" ... })
+	// $$Response           -- Complete JSON payload of the response
+	// $$ResponseHeaders    -- JSON format for the response headers ({ "Content-Type": "application/json" ... })
+	"!switch($$ErrorCode)": {
+		// If we received an error 400 - raise an Unknown error on the Entity being processed
+		// You can improve this by selecting the correct JSON Path to the error message from the $$Response
+		"400": {
+			"!default": "@.Error.Unknown($$Response)"
+		},
+		// If we received an error 500 - raise an Unknown error on the Entity being processed
+		// You can improve this by selecting the correct JSON Path to the error message from the $$Response
+		"500": {
+			"!default": "@.Error.Unknown($$Response)"
+		}
+	}
+}

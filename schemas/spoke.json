@@ -1,0 +1,118 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas plugin.json files",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/spoke.json",
+            "enum": [
+                "https://sandbox.onesaas.com/schemas/1.0/spoke.json"
+            ]
+        },
+        "Name": {
+            "description": "Unique name of the plugin.",
+            "type": "string"
+        },
+        "NormalizedName": {
+            "description": "Unique url-friendly name for the plugin.",
+            "type": "string",
+            "pattern": "^[a-z0-9-]*$"
+        },
+        "UniqueKey": {
+            "description": "GUID for the plugin.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}$"
+        },
+        "PluginKey": {
+            "description": "GUID for the plugin.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}$"
+        },
+        "Category": {
+            "type": "string",
+            "description": "Category for the spoke. We recommend using one of the existing category names: 'Accounting', 'eCommerce', 'POS', 'Email Marketing', '3PL', 'Billing &Invoicing', 'CRM'."
+        },
+        "Events": {
+            "type": "object",
+            "properties": {
+                "connection:authenticated": {
+                    "description": "First event triggered once the connection was authenticated. The execution will WAIT for this event to finish before the user is redirected to the PostAuthenticate (if defined) or back to the main UI. Use this event to pull Company/Account information, or Lists of Companies that the user should select in the PostAuthorize",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/eventaction"
+                    }
+                },
+                "connection:init": {
+                    "description": "Event triggered after the connection was authenticated (and after connection:authenticated) if there is no PostAuthorize properties. The execution will be done asynchronously while the user is redirected back in the main UI. Use this event to pull config used resources (taxcodes, properties, accounts, payment methods, classes, tracking codes...)",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/eventaction"
+                    }
+                },
+                "connection:connected": {
+                    "description": "Last event triggered after the connection was authenticated and initialized.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/eventaction"
+                    }
+                },
+                "sync:starting": {
+                    "description": "Triggered before a Synchronization is about to start. You can use this to update WebHooks or inform the other system we are about to start a sync.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/eventaction"
+                    }
+                },
+                "workflow:statechanged": {
+                    "description": "Triggered before a workflow was activated in the UI by the user. You can use this to update WebHooks or inform the other system that a workflow was activated.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/eventaction"
+                    }
+                }
+            },
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/eventaction"
+                }
+            },
+            "required": [
+                "connection:init"
+            ]
+        },
+        "Options": {
+            "type": "object"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "Name",
+        "UniqueKey",
+        "Events"
+    ],
+    "definitions": {
+        "eventaction": {
+            "anyOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "resource:retrieveall": {
+                            "description": "Trigger a Retrieve All on the specified resource. E.g. Pull all taxcode:taxcodes or financialaccount:paymentmethods before the config screens are displayed.",
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "resource:uploadall": {
+                            "description": "Trigger an Upload All on the specified resource. This should only be used to Update webhook:webhooks resources.",
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

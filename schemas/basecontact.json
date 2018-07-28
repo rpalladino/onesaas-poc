@@ -1,0 +1,125 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas Base Contact",
+    "definitions": {
+        "basecontact": {
+            "properties": {
+                "RemoteUid": {
+                    "type": "string"
+                },
+                "GivenName": {
+                    "type": "string"
+                },
+                "Website": {
+                    "type": "string"
+                },
+                "EmailWork": {
+                    "type": "string"
+                },
+                "PhoneMobile": {
+                    "type": "string"
+                },
+                "PhoneWork": {
+                    "type": "string"
+                },
+                "PhoneHome": {
+                    "type": "string"
+                },
+                "FaxHome": {
+                    "type": "string"
+                },
+                "Notes": {
+                    "type": "string"
+                },
+                "BusinessNumber": {
+                    "type": "string"
+                },
+                "BillingAddress": {
+                    "$ref": "#/definitions/baseaddress"
+                },
+                "ShippingAddress": {
+                    "$ref": "#/definitions/baseaddress"
+                },
+                "Type": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "string",
+                            "enum": [
+                                "Customer",
+                                "Vendor",
+                                "Lead"
+                            ]
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "GivenName"
+            ]
+        },
+        "baseaddress": {
+            "properties": {
+                "RemoteUid": {
+                    "type": "string"
+                },
+                "AddressType": {
+                    "type": "string",
+                    "enum": [
+                        "BillingAddress",
+                        "ShippingAddress",
+                        "HomeAddress"
+                    ]
+                },
+                "FirstName": {
+                    "type": "string"
+                },
+                "LastName": {
+                    "type": "string"
+                },
+                "OrganizationName": {
+                    "type": "string"
+                },
+                "Email": {
+                    "type": "string"
+                },
+                "Phone": {
+                    "type": "string"
+                },
+                "AddressLine1": {
+                    "type": "string"
+                },
+                "AddressLine2": {
+                    "type": "string"
+                },
+                "AddressLine3": {
+                    "type": "string"
+                },
+                "AddressLine4": {
+                    "type": "string"
+                },
+                "Suburb": {
+                    "type": "string"
+                },
+                "State": {
+                    "type": "string"
+                },
+                "PostCode": {
+                    "type": "string"
+                },
+                "Country": {
+                    "type": "string"
+                },
+                "CountryCode": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "AddressType"
+            ]
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas Configuration Property",
+    "type": "object",
+    "properties": {
+        "RemoteUid": {
+            "description": "Unique identifier of this entity in the remote system.",
+            "type": "string"
+        },
+        "PropertyName": {
+            "type": "string"
+        },
+        "Value": {
+            "oneOf": [
+                {
+                    "type": "object"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "OperationType": {
+            "type": "string",
+            "enum": [
+                "Create",
+                "Create,Update",
+                "Update"
+            ]
+        }
+    }
+}

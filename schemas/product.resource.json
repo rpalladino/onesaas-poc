@@ -1,0 +1,155 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas Product Resource",
+    "allOf": [
+        {
+            "$ref": "resource.base.json#/definitions/resource"
+        },
+        {
+            "properties": {
+                "$schema": {
+                    "type": "string",
+                    "default": "https://sandbox.onesaas.com/schemas/1.0/product.resource.json",
+                    "enum": [
+                        "https://sandbox.onesaas.com/schemas/1.0/product.resource.json"
+                    ]
+                },
+                "Operations": {
+                    "properties": {
+                        "system:retrieve": {
+                            "description": "Retrieve a batch of items from the target system.",
+                            "properties": {
+                                "Proxy": {
+                                    "$ref": "resource.base.json#/definitions/proxy"
+                                },
+                                "Events": {
+                                    "$ref": "#/definitions/events-retrieve"
+                                }
+                            },
+                            "required": [
+                                "Proxy"
+                            ]
+                        },
+                        "system:internalcreate": {
+                            "description": "An entity was created internally (via a transformations).",
+                            "properties": {
+                                "Events": {
+                                    "$ref": "#/definitions/events-internalcreate"
+                                }
+                            }
+                        },
+                        "system:findexisting": {
+                            "description": "Find an exact item in the target system by {{RemoteUid}}.",
+                            "properties": {
+                                "Proxy": {
+                                    "$ref": "resource.base.json#/definitions/proxy"
+                                },
+                                "Events": {
+                                    "$ref": "#/definitions/events-retrieve"
+                                }
+                            },
+                            "required": [
+                                "Proxy"
+                            ]
+                        },
+                        "webhook:*": {
+                            "description": "Handler for any event received via a webhook.",
+                            "properties": {
+                                "Proxy": {
+                                    "$ref": "resource.base.json#/definitions/proxy-webhook"
+                                },
+                                "Events": {
+                                    "$ref": "#/definitions/events-webhook"
+                                }
+                            },
+                            "required": [
+                                "Proxy"
+                            ]
+                        }
+                    },
+                    "patternProperties": {
+                        "webhook\\:.*": {
+                            "description": "Handler for a webhook topic.",
+                            "properties": {
+                                "Proxy": {
+                                    "$ref": "resource.base.json#/definitions/proxy-webhook"
+                                },
+                                "Events": {
+                                    "$ref": "#/definitions/events-webhook"
+                                }
+                            }
+                        },
+                        ".*\\:.*": {
+                            "description": "Custom resource operation. You can invoke this via resource:operation.",
+                            "properties": {
+                                "Proxy": {
+                                    "$ref": "resource.base.json#/definitions/proxy"
+                                },
+                                "Events": {
+                                    "$ref": "#/definitions/events-retrieve"
+                                }
+                            }
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            }
+        }
+    ],
+    "definitions": {
+        "events-retrieve": {
+            "properties": {
+                "convert:success": {
+                    "$ref": "#/definitions/events-retrieve-convert-success"
+                },
+                "proxy:received": {
+                    "$ref": "resource.base.json#/definitions/events/proxy-received"
+                },
+                "save:success": {
+                    "$ref": "resource.base.json#/definitions/events/save-success"
+                }
+            },
+            "additionalProperties": false
+        },
+        "events-internalcreate": {
+            "type": "object",
+            "properties": {
+                "convert:success": {
+                    "$ref": "#/definitions/events-retrieve-convert-success"
+                },
+                "save:success": {
+                    "$ref": "resource.base.json#/definitions/events/save-success"
+                }
+            }
+        },
+        "events-webhook": {
+            "type": "object",
+            "properties": {
+                "convert:success": {
+                    "$ref": "#/definitions/events-retrieve-convert-success"
+                },
+                "save:success": {
+                    "$ref": "resource.base.json#/definitions/events/save-success"
+                }
+            }
+        },
+        "events-retrieve-convert-success": {
+            "description": "The entity was succesfully converted.",
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "description": "Calculate product taxes.",
+                        "properties": {
+                            "product:calculate": {
+                                "type": "boolean",
+                                "default": true
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ]
+            }
+        }
+    }
+}

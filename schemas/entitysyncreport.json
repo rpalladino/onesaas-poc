@@ -1,0 +1,90 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for an Entity Sync Report",
+    "type": "object",
+    "properties": {
+        "Type": {
+            "enum": [
+                "Debug",
+                "Information",
+                "Notification",
+                "Error"
+            ]
+        },
+        "Code": {
+            "type": "string"
+        },
+        "Message": {
+            "type": "string"
+        },
+        "ReferenceUid": {
+            "description": "Used to save the Uid of received entity associated with this error. This can help with diagnosing some errors.",
+            "type": "string"
+        },
+        "EntityType": {
+            "enum": [
+                "Contact",
+                "Organization",
+                "ContactWithOrganization",
+                "ContactAddress",
+                "Product",
+                "ProductStock",
+                "TaxCode",
+                "FinancialAccount",
+                "Transaction",
+                "TransactionPayment",
+                "TransactionShipping",
+                "TransactionShippingEvent",
+                "Classification",
+                "ConfigurationProperty",
+                "EntitySyncReport"
+            ]
+        },
+        "EntityId": {
+            "description": "This is the internal OneSaas id for the entity",
+            "type": "number"
+        },
+        "RelatedEntityType": {
+            "enum": [
+                "Contact",
+                "Organization",
+                "ContactWithOrganization",
+                "ContactAddress",
+                "Product",
+                "ProductStock",
+                "TaxCode",
+                "FinancialAccount",
+                "Transaction",
+                "TransactionPayment",
+                "TransactionShipping",
+                "TransactionShippingEvent",
+                "Classification",
+                "ConfigurationProperty",
+                "EntitySyncReport"
+            ]
+        },
+        "RelatedEntityId": {
+            "type": "number"
+        },
+        "ConnectionDisplayName": {
+            "type": "string"
+        },
+        "ConnectionName": {
+            "type": "string"
+        },
+        "ConnectionTypeDisplayName": {
+            "type": "string"
+        },
+        "ConnectionTypeyName": {
+            "type": "string"
+        },
+        "ResourceName": {
+            "description": "Name of the resource e.g. customer, invoices, ...",
+            "type": "string"
+        },
+        "ResourceFullName": {
+            "description": "Full name of the resource (e.g. contact:customer, transaction:invoices, ...) This can be used with @.Resolve and @.Require",
+            "type": "string"
+        }
+    }
+}

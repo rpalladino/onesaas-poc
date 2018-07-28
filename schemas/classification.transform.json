@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas Resource Transformations",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/classification.transform.json",
+            "enum": [
+                "https://sandbox.onesaas.com/schemas/1.0/classification.transform.json"
+            ]
+        },
+        "system:retrieve": {
+            "$ref": "classification.json#"
+        }
+    },
+    "additionalProperties": {
+        "oneOf": [
+            {
+                "type": "object"
+            }
+        ]
+    }
+}

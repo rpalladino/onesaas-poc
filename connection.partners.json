@@ -1,0 +1,68 @@
+{
+	// Connection & Authorization for the spoke
+	// Docs: https://sandbox.onesaas.com/docs/#/docs/spoke/auth/index
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/connection.json",
+	// ConnectionType: OAuth1, OAuth1A, OAuth2, Other (e.g. HTTP) or Ftp
+	"AuthorizationType": "Other",
+	// OAuth1 & OAuth2 - You should configure the ReturnUrl to be
+	// https://partners.onesaas.com/api/connections/returnauth/activecampaignpoc
+	// and https://partners.onesaas.com/api/connections/returnauth/activecampaignpoc@latest
+	"Environments": {
+		// Other (ApiKey): Comment in and fill in this section
+		// https://sandbox.onesaas.com/docs/#/api/connectiontypes/userpass
+		// "default": {
+		// 	"BaseUrl": "https://...",
+		// }
+		// ------------------------------------------------------------
+		// UserPass: Comment in and fill in this section
+		// Docs: https://sandbox.onesaas.com/docs/#/api/connectiontypes/userpass
+		// "default": {
+		// 	"BaseUrl": "https://...",
+		// }
+		// ------------------------------------------------------------
+		// OAuth1: Comment in and fill in this section
+		// Docs: https://sandbox.onesaas.com/docs/#/api/connectiontypes/oauth1
+		// "default": {
+		// 	// Enter the BaseUrl (all API calls will be made from this root url)
+		// 	"BaseUrl": "https://...",
+		// 	// OAuth1 Authorize Url
+		// 	"AuthorizeUrl": "https://...",
+		// 	// OAuth1 Access Token Url
+		// 	"AccessTokenUrl": "https://...",
+		// 	// OAuth1 Request Token Url
+		// 	"RequestTokenUrl": "https://...",
+		// 	// OAuth1 Refresh Token Url (optional)
+		// 	"RefreshTokenUrl": "https://...",
+		// 	// SignatureMethod - default is HMAC-SHA256
+		// 	// Contact us about SignatureMethod:RSA-SHA1 with custom certificates
+		// 	//"SignatureMethod": "HMAC-SHA256"
+		// 	// OAuth1 Consumer Key (client_id) that you configured for the app
+		// 	"ConsumerKey": "...",
+		// 	// OAuth1 Consumer Secret (client_secret) that you configured for the app
+		// 	"ConsumerSecret": "...",
+		// },
+		// ------------------------------------------------------------
+		// OAuth2: Comment in and fill in this section
+		// Docs: https://sandbox.onesaas.com/docs/#/api/connectiontypes/oauth2
+		// "default": {
+		// 	// Enter the BaseUrl (all API calls will be made from this root url)
+		// 	"BaseUrl": "https://...",
+		// 	// OAuth2 Authorize Url
+		// 	"AuthorizeUrl": "https://...",
+		// 	// OAuth2 Request Token Url
+		// 	"RequestTokenUrl": "https://...",
+		// 	// OAuth2 Refresh Token Url
+		// 	"RefreshTokenUrl": "https://...",
+		// 	// OAuth Refresh Token format application/x-www-form-urlencoded|application/json
+		// 	//"RefreshTokenFormat":"application/x-www-form-urlencoded"
+		// 	// OAuth2 Grant type=authorization_code|password
+		// 	//"GrantType": "authorization_code"
+		// 	// OAuth2 Scope
+		// 	// "Scope": "..."
+		// 	// OAuth2 Consumer Key that you configured for the app
+		// 	"ConsumerKey": "...",
+		// 	// OAuth2 Consumer Secret that you configured for the app
+		// 	"ConsumerSecret": "...",
+		// }
+	}
+}

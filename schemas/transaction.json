@@ -1,0 +1,437 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas Transaction",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/transaction.json",
+            "enum": [
+                "https://sandbox.onesaas.com/schemas/1.0/transaction.json"
+            ]
+        },
+        "RemoteUid": {
+            "description": "Unique identifier of this entity in the remote system.",
+            "type": "string"
+        },
+        "Number": {
+            "type": "string"
+        },
+        "PurchaseOrderNumber": {
+            "type": "string"
+        },
+        "Date": {
+            "type": "string"
+        },
+        "DueDate": {
+            "type": "string"
+        },
+        "Contact": {
+            "oneOf": [
+                {
+                    "$ref": "contact.json#"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "BillingAddress": {
+            "$ref": "basecontact.json#/definitions/baseaddress"
+        },
+        "ShippingAddress": {
+            "$ref": "basecontact.json#/definitions/baseaddress"
+        },
+        "Total": {
+            "type": "string"
+        },
+        "CurrencyCode": {
+            "type": "string"
+        },
+        "ExchangeRate": {
+            "type": "string"
+        },
+        "Summary": {
+            "type": "string"
+        },
+        "Notes": {
+            "type": "string"
+        },
+        "Tags": {
+            "type": "string"
+        },
+        "ShippingMethod": {
+            "type": "string"
+        },
+        "TaxesIncluded": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "boolean"
+                }
+            ]
+        },
+        "Type": {
+            "type": "string",
+            "default": "Sale",
+            "enum": [
+                "Sale",
+                "Purchase"
+            ]
+        },
+        "StatusType": {
+            "type": "string",
+            "default": "Invoice",
+            "enum": [
+                "Invoice",
+                "Order",
+                "Quote",
+                "CreditNote",
+                "JournalEntry"
+            ]
+        },
+        "TaxType": {
+            "type": "string",
+            "default": "TaxInclusive",
+            "enum": [
+                "TaxInclusive",
+                "TaxExclusive"
+            ]
+        },
+        "SummarizeStatus": {
+            "type": "string",
+            "default": "DontSummarize",
+            "enum": [
+                "DontSummarize",
+                "ShouldSummarize",
+                "ShouldSummarizeIndividually",
+                "IsSummary"
+            ]
+        },
+        "LayoutType": {
+            "type": "string",
+            "default": "Items",
+            "enum": [
+                "Items",
+                "Services",
+                "MixedMode"
+            ]
+        },
+        "Items": {
+            "type": "array",
+            "items": [
+                {
+                    "$ref": "#/definitions/transactionitem"
+                }
+            ]
+        },
+        "Payments": {
+            "type": "array",
+            "items": [
+                {
+                    "$ref": "#/definitions/transactionpayment"
+                }
+            ]
+        },
+        "HasPayments": {
+            "type": "boolean",
+            "description": "(Readonly) Set to true if the Transaction has any payments. Also see IsFullyPaid."
+        },
+        "IsFullyPaid": {
+            "type": "boolean",
+            "description": "(Readonly) Set to true if the Transaction is full paid. Also see HasPayments."
+        },
+        "HasDiscounts": {
+            "type": "boolean",
+            "description": "(Readonly) Set to true if the Transaction has any lines that have a Discount %."
+        },
+        "HasSameDiscountPercentageOnAllLines": {
+            "type": "boolean",
+            "description": "(Readonly) Set to true if the all the lines have a discount != 0 and the Discount % is the same on all lines (e.g. 20% on all lines)."
+        },
+        "DiscountPercentage": {
+            "type": "number",
+            "description": "(Readonly) Discount% applied to all lines - when HasSameDiscountPercentageOnAllLines is true, Null otherwise (e.g. 20% on all lines)."
+        },
+        "TotalDiscountAmount": {
+            "type": "number",
+            "description": "(Readonly) Total Discount Amount for the transaction."
+        },
+        "Data": {
+            "type": "object",
+            "description": "Any custom data (key=value) that will be stored with the model and available to all other spokes."
+        }
+    },
+    "patternProperties": {
+        "(Items)\\|.*": {
+            "type": "array",
+            "items": [
+                {
+                    "$ref": "#/definitions/transactionitem"
+                }
+            ]
+        },
+        "(Payments)\\|.*": {
+            "type": "array",
+            "items": [
+                {
+                    "$ref": "#/definitions/transactionpayment"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "transactionitem": {
+            "properties": {
+                "ProductCode": {
+                    "type": "string"
+                },
+                "ProductName": {
+                    "type": "string"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "UnitPrice": {
+                    "type": "string",
+                    "description": "UnitPrice for each item (including tax)"
+                },
+                "UnitPriceExTax": {
+                    "type": "string",
+                    "description": "UnitPrice for each item (exluding tax)"
+                },
+                "UnitDiscountAmount": {
+                    "type": "number",
+                    "description": "(Readonly) Discount Amount for one unit.",
+                    "readonly": true
+                },
+                "Quantity": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ]
+                },
+                "DiscountPercentage": {
+                    "type": "string"
+                },
+                "DiscountAmount": {
+                    "type": "number",
+                    "description": "Total Line Discount Amount (for all items).",
+                    "readonly": true
+                },
+                "DiscountCode": {
+                    "type": "string"
+                },
+                "TaxAmountOverride": {
+                    "type": "string"
+                },
+                "IsTaxed": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "Account": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "financialaccount.json#"
+                        }
+                    ]
+                },
+                "Product": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "product.json#"
+                        }
+                    ]
+                },
+                "Tax": {
+                    "description": "Use this to fill in Tax information for the line and let OneSaas create & manage the taxes.",
+                    "$ref": "#/definitions/taxinfomodel"
+                },
+                "Taxes": {
+                    "description": "Use this to fill in Tax information for the line and let OneSaas create & manage the taxes.",
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/taxinfomodel"
+                        }
+                    ]
+                },
+                "TaxCode": {
+                    "description": "A reference to a known tax code. Use @.Require.ByRemoteUid('taxcode:taxcodes', reference) to resolve the tax code.",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "taxcode.json#"
+                        }
+                    ]
+                },
+                "RedistributeDiscountByTax": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "Type": {
+                    "type": "string",
+                    "default": "LineItem",
+                    "enum": [
+                        "Line",
+                        "Shipping",
+                        "Discount",
+                        "Duty",
+                        "Tax",
+                        "GiftCertificate"
+                    ]
+                },
+                "OrderIndex": {
+                    "type": "string"
+                },
+                "Classifications": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "classification.json#"
+                        }
+                    ]
+                },
+                "LineTotal": {
+                    "type": "number",
+                    "description": "Line Total (UnitPrice-IncTax * Quantity) (excludes Discounts!).",
+                    "readonly": true
+                },
+                "DiscountedLineTotal": {
+                    "type": "number",
+                    "description": "Line Total (UnitPrice-IncTax * Quantity) - Discount.",
+                    "readonly": true
+                },
+                "LineTotalExTax": {
+                    "type": "number",
+                    "description": "Line Total (UnitPriceExTax * Quantity) (excludes Discounts!).",
+                    "readonly": true
+                },
+                "DiscountedLineTotalExTax": {
+                    "type": "number",
+                    "description": "Line Total (UnitPriceExTax * Quantity) - Discount.",
+                    "readonly": true
+                },
+                "DiscountedUnitPrice": {
+                    "type": "number",
+                    "description": "Line Total (UnitPrice * Quantity - Discount %) including tax.",
+                    "readonly": true
+                },
+                "DiscountedUnitPriceExTax": {
+                    "type": "number",
+                    "description": "Line Total (UnitPriceExTax * Quantity - Discount %) excluding tax.",
+                    "readonly": true
+                }
+            },
+            "patternProperties": {
+                "(Taxes)\\|.*": {
+                    "description": "Use this to fill in Tax information for the line and let OneSaas create & manage the taxes.",
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/taxinfomodel"
+                        }
+                    ]
+                }
+            }
+        },
+        "transactionpayment": {
+            "properties": {
+                "RemoteUid": {
+                    "description": "Unique identifier of this entity in the remote system.",
+                    "type": "string"
+                },
+                "Amount": {
+                    "type": "string"
+                },
+                "Account": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "financialaccount.json#"
+                        }
+                    ]
+                },
+                "Date": {
+                    "type": "string"
+                },
+                "ClearingDate": {
+                    "type": "string"
+                },
+                "ReferenceNumber": {
+                    "type": "string"
+                },
+                "Summary": {
+                    "type": "string"
+                },
+                "Notes": {
+                    "type": "string"
+                },
+                "OriginalPaymentMethodName": {
+                    "type": "string"
+                },
+                "ShippingMethod": {
+                    "type": "string"
+                },
+                "MethodType": {
+                    "type": "string",
+                    "default": "Payment",
+                    "enum": [
+                        "Payment",
+                        "GiftCard",
+                        "StoreCredit",
+                        "LoyaltyPoints"
+                    ]
+                }
+            }
+        },
+        "taxinfomodel": {
+            "description": "Use this to fill in Tax information for the line and let OneSaas create & manage the taxes. If you have a reference to a TaxCode id use property 'TaxCode'.",
+            "properties": {
+                "Code": {
+                    "type": "string"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "Rate": {
+                    "type": "string"
+                },
+                "Value": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+{
+	// General details about the spoke ActiveCampaign-POC
+	//
+	// Definitions of the fields found on this file are in the link below.
+	// Docs: https://sandbox.onesaas.com/docs/#/api/spokestructure/spoke
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/spoke.json",
+	// Name for your spoke
+	"Name": "ActiveCampaign-POC",
+	// Slug (url friendly) name
+	"NormalizedName": "activecampaignpoc",
+	// Unique Guid(s) for this spoke
+	"UniqueKey": "9e876979-5b5a-472c-852e-3eb736d1596c",
+	"PluginKey": "b7d8c725-920d-468f-ac0e-83bdf36d161b",
+	// Spoke Category "eCommerce"
+	"Category": "eCommerce",
+	"Events": {
+		// Definitions of the events can be found in the following:
+		// https://sandbox.onesaas.com/docs/#/api/spokestructure/spoke:standardevents
+		// First event triggered once the connection was authenticated (sync)
+		"connection:authenticated": [],
+		// Second event triggered after the connection was authenticated (async)
+		"connection:init": [],
+		// Last event triggered after the connection was authenticated and initialized
+		"connection:connected": [],
+		// Triggered before a Synchronization is about to start.
+		"sync:starting": [],
+		// Triggered before a workflow was activated in the UI by the user.
+		"workflow:statechanged": []
+	}
+}

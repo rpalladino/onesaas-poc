@@ -1,0 +1,81 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas Transformations",
+    "type": "object",
+    "definitions": {
+        "transform": {
+            "additionalProperties": {
+                "$ref": "#/definitions/transform"
+            },
+            "patternProperties": {
+                "\\|http\\(GET|POST\\)$": {
+                    "$ref": "#/definitions/transform-http"
+                },
+                "\\|when\\(.*?\\)": {
+                    "$ref": "#/definitions/transform-when"
+                },
+                "\\|foreach\\((\\$\\$[a-z]+) in .*?\\)": {
+                    "description": "for loop: Iterate $$1 over the values of the right-handside array.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/transform"
+                    }
+                }
+            }
+        },
+        "transform-http": {
+            "description": "Execute an HTTP request. Returns a value in format { \"Body\": Received Body, \"Headers\": List of received headers, \"File\": \"file name part of the path.\", \"Path\": \"The called path.\" }\n\nTo work with the received payload use $.Body or |select($.Body)|http(...){ }.",
+            "properties": {
+                "Path": {
+                    "description": "HTTP Path for the request.",
+                    "type": "string"
+                },
+                "Query": {
+                    "description": "Query Parameters.",
+                    "$ref": "#/definitions/keyvalue"
+                },
+                "Content-Type": {
+                    "description": "Content-Type for the request.",
+                    "type": "string",
+                    "default": "application/json"
+                },
+                "Accept": {
+                    "description": "Accept for the request.",
+                    "type": "string",
+                    "default": "application/json"
+                },
+                "Headers": {
+                    "description": "Custom Headers.",
+                    "$ref": "#/definitions/keyvalue"
+                },
+                "RequestFormat": {
+                    "description": "Structured format for the request.",
+                    "$ref": "#/definitions/requestformat"
+                },
+                "ResponseFormat": {
+                    "description": "Structured format for the request.",
+                    "$ref": "#/definitions/requestformat"
+                },
+                "Body": {
+                    "description": "The body of the outgoing payload."
+                }
+            }
+        },
+        "transform-when": {
+            "description": "Set the value on the left-handside with the expression on the right-handside if the condition evaluates to true."
+        },
+        "keyvalue": {
+            "type": "object",
+            "additionalProperties": {
+                "type": [
+                    "string",
+                    "number",
+                    "boolean",
+                    "integer",
+                    "null"
+                ]
+            }
+        },
+        "requestformat": {}
+    }
+}

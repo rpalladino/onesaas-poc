@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas Resource Transformations",
+    "type": "object",
+    "properties": {
+        "system:retrieve": {
+            "oneOf": [
+                {
+                    "$ref": "financialaccount.json#"
+                },
+                {
+                    "$ref": "taxcode.json#"
+                }
+            ]
+        },
+        "system:create": {}
+    },
+    "required": [
+        "system:retrieve"
+    ]
+}

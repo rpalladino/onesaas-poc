@@ -1,0 +1,95 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas Transaction Payment",
+    "type": "object",
+    "oneOf": [
+        {
+            "$ref": "#/definitions/payment"
+        },
+        {
+            "properties": {
+                "~Items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/payment"
+                    }
+                }
+            }
+        }
+    ],
+    "definitions": {
+        "payment": {
+            "properties": {
+                "$schema": {
+                    "type": "string",
+                    "default": "https://sandbox.onesaas.com/schemas/1.0/payment.json",
+                    "enum": [
+                        "https://sandbox.onesaas.com/schemas/1.0/payment.json"
+                    ]
+                },
+                "RemoteUid": {
+                    "description": "Unique identifier of this entity in the remote system.",
+                    "type": "string"
+                },
+                "Amount": {
+                    "oneOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "Account": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "financialaccount.json#"
+                        }
+                    ]
+                },
+                "Date": {
+                    "type": "string"
+                },
+                "ClearingDate": {
+                    "type": "string"
+                },
+                "ReferenceNumber": {
+                    "type": "string"
+                },
+                "Summary": {
+                    "type": "string"
+                },
+                "Notes": {
+                    "type": "string"
+                },
+                "OriginalPaymentMethodName": {
+                    "type": "string"
+                },
+                "Transaction": {
+                    "description": "Reference back to the owner transaction.",
+                    "type": "string"
+                },
+                "PaymentMethodType": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "string",
+                            "enum": [
+                                "Payment",
+                                "GiftCard",
+                                "StoreCredit",
+                                "LoyaltyPoints"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

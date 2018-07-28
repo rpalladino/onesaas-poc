@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas ContactWithOrganization",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/contactwithorganization.json",
+            "enum": [
+                "https://sandbox.onesaas.com/schemas/1.0/contactwithorganization.json"
+            ]
+        },
+        "RemoteUid": {
+            "description": "Unique identifier of this entity in the remote system.",
+            "type": "string"
+        },
+        "Type": {
+            "description": "Type of customer (e.g. Vendor, Customer, Lead). Can be used for filtering and matching with other systems.",
+            "type": "array",
+            "items": [
+                {
+                    "type": "string",
+                    "enum": [
+                        "Vendor",
+                        "Customer",
+                        "Lead"
+                    ]
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "GivenName": {
+            "type": "string"
+        },
+        "MiddleName": {
+            "type": "string"
+        },
+        "FamilyName": {
+            "type": "string"
+        },
+        "OrganizationName": {
+            "type": "string"
+        },
+        "Website": {
+            "type": "string"
+        },
+        "EmailWork": {
+            "type": "string"
+        },
+        "PhoneMobile": {
+            "type": "string"
+        },
+        "PhoneWork": {
+            "type": "string"
+        },
+        "PhoneHome": {
+            "type": "string"
+        },
+        "FaxHome": {
+            "type": "string"
+        },
+        "Salutation": {
+            "type": "string"
+        },
+        "Title": {
+            "type": "string"
+        },
+        "EmailHome": {
+            "type": "string"
+        },
+        "BusinessNumber": {
+            "type": "string"
+        },
+        "CurrencyCode": {
+            "type": "string"
+        },
+        "BillingAddress": {
+            "$ref": "basecontact.json#/definitions/baseaddress"
+        },
+        "ShippingAddress": {
+            "$ref": "basecontact.json#/definitions/baseaddress"
+        },
+        "HomeAddress": {
+            "$ref": "basecontact.json#/definitions/baseaddress"
+        }
+    }
+}

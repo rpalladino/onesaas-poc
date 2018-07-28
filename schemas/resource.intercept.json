@@ -1,0 +1,101 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "Base JSON Schema for OneSaas Resource Interceptors",
+    "definitions": {
+        "intercept": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "error:parse": {
+                            "anyOf": [
+                                {
+                                    "$ref": "#/definitions/intercept-errorparse"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/intercept-errorparse"
+                                    }
+                                }
+                            ]
+                        },
+                        "response:modify": {
+                            "anyOf": [
+                                {
+                                    "$ref": "#/definitions/intercept-responsemodify"
+                                },
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/intercept-responsemodify"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "intercept-errorparse": {
+            "type": "object",
+            "properties": {
+                "Selector": {
+                    "type": "string"
+                },
+                "Value": {
+                    "type": "string"
+                },
+                "ErrorMessage": {
+                    "type": "string"
+                },
+                "ErrorMessageSelector": {
+                    "type": "string"
+                },
+                "EntityError": {
+                    "type": "string"
+                },
+                "IntegrationError": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "enum": [
+                                "NotAuthorized",
+                                "InvalidToken",
+                                "InvalidCredentials",
+                                "IncompleteConnect",
+                                "RetryOnce",
+                                "AccountInactive"
+                            ]
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        "intercept-responsemodify": {
+            "type": "object",
+            "properties": {
+                "Selector": {
+                    "type": "string"
+                },
+                "Value": {
+                    "type": "string"
+                },
+                "SetToken": {
+                    "type": "string"
+                },
+                "Header": {
+                    "type": "string"
+                },
+                "ValueSelector": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

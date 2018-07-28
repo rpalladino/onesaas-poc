@@ -1,0 +1,208 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "Base JSON Schema for OneSaas Resource",
+    "definitions": {
+        "resource": {
+            "description": "Common part of all resources",
+            "properties": {
+                "$schema": {
+                    "type": "string"
+                },
+                "Name": {
+                    "description": "Name of this resource in format [type]:[name].",
+                    "type": "string",
+                    "pattern": "(contact|organization|transaction|product|transactionpayment|financialaccount|classification|taxcode|job|productstock|transactionshipping|configurationproperty|resource|resourcecustomization|webhook|entitysyncreport|accountsummary)\\:[a-z0-9-\\*]*"
+                },
+                "Accept": {
+                    "$ref": "#/definitions/acceptheader"
+                },
+                "ContentType": {
+                    "$ref": "#/definitions/acceptheader"
+                },
+                "Url": {
+                    "description": "Override base url for this resource.",
+                    "type": "string"
+                },
+                "Headers": {
+                    "description": "List of custom headers to apply to all calls on this resource.",
+                    "$ref": "#/definitions/headers"
+                },
+                "TransportType": {
+                    "description": "Backward compatible with C# code.",
+                    "type": "string"
+                }
+            }
+        },
+        "proxy": {
+            "type": "object",
+            "properties": {
+                "PathAndQuery": {
+                    "type": "string"
+                },
+                "InitialPathAndQuery": {
+                    "type": "string"
+                },
+                "Paging": {
+                    "type": "object",
+                    "properties": {
+                        "Type": {
+                            "enum": [
+                                "index",
+                                "cursor"
+                            ]
+                        }
+                    }
+                },
+                "Headers": {
+                    "$ref": "#/definitions/headers"
+                },
+                "Selector": {
+                    "type": "string"
+                },
+                "UidSelector": {
+                    "type": "string"
+                },
+                "ContentType": {
+                    "$ref": "#/definitions/acceptheader"
+                },
+                "Accept": {
+                    "$ref": "#/definitions/acceptheader"
+                },
+                "Body": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "object"
+                        }
+                    ]
+                },
+                "BodyInsertSelector": {
+                    "type": "string"
+                },
+                "Method": {
+                    "default": "GET",
+                    "enum": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "FORMPOST",
+                        "PATCH"
+                    ]
+                },
+                "StaticData": {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "Intercept": {
+                    "$ref": "resource.intercept.json#/definitions/intercept"
+                }
+            },
+            "additionalProperties": false
+        },
+        "proxy-webhook": {
+            "type": "object",
+            "properties": {
+                "Selector": {
+                    "type": "string"
+                },
+                "UidSelector": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Selector"
+            ],
+            "additionalProperties": false
+        },
+        "headers": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "acceptheader": {
+            "type": "string",
+            "default": "application/json",
+            "enum": [
+                "application/json",
+                "application/xml"
+            ]
+        },
+        "url": {
+            "description": "Override base url for this resource.",
+            "type": "string"
+        },
+        "events": {
+            "proxy-received": {
+                "description": "The entity was retrieved from the source system.",
+                "type": "array",
+                "items": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/eventactions-resourceoperation"
+                        }
+                    ]
+                }
+            },
+            "save-success": {
+                "description": "The entity retrieved, converted and saved in OneSaas.",
+                "type": "array",
+                "items": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/eventactions-resourceoperation"
+                        }
+                    ]
+                }
+            }
+        },
+        "eventactions-resourceoperation": {
+            "type": "object",
+            "properties": {
+                "resource:operation": {
+                    "anyOf": [
+                        {
+                            "type": "array",
+                            "items": [
+                                {
+                                    "$ref": "#/definitions/action-resourceoperation-one"
+                                }
+                            ]
+                        },
+                        {
+                            "$ref": "#/definitions/action-resourceoperation-one"
+                        }
+                    ]
+                }
+            }
+        },
+        "action-resourceoperation-one": {
+            "properties": {
+                "Name": {
+                    "type": "string",
+                    "description": "Name of Resource Operation to execute"
+                },
+                "Selector": {
+                    "type": "string",
+                    "description": "Select this path from the received result and use that to insert into the current element into ThisSelector. Generally is $ to insert the complete received object. If left empty the result from the other resource:operation will not be used."
+                },
+                "SetToken": {
+                    "type": "string",
+                    "description": "Token to be set/inserted in the current element. If left empty the complete current element is replaced."
+                },
+                "ThisSelector": {
+                    "type": "string",
+                    "description": "Path in the current element where to do the insert. E.g. $ to insert at the root or $.Taxes[*] to update the Taxes array."
+                }
+            },
+            "required": [
+                "Name"
+            ]
+        }
+    }
+}

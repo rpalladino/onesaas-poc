@@ -1,0 +1,697 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas connection.json files",
+    "oneOf": [
+        {
+            "$ref": "#/definitions/connection/oauth1"
+        },
+        {
+            "$ref": "#/definitions/connection/oauth1a"
+        },
+        {
+            "$ref": "#/definitions/connection/oauth2"
+        },
+        {
+            "$ref": "#/definitions/connection/usernamepassword"
+        },
+        {
+            "$ref": "#/definitions/connection/other"
+        },
+        {
+            "$ref": "#/definitions/connection/ftp"
+        }
+    ],
+    "definitions": {
+        "connection": {
+            "oauth1": {
+                "type": "object",
+                "properties": {
+                    "$schema": {
+                        "type": "string",
+                        "default": "https://sandbox.onesaas.com/schemas/1.0/connection.json"
+                    },
+                    "ConnectionKey": {
+                        "$ref": "#/definitions/commonproperties/ConnectionKey"
+                    },
+                    "EnvironmentKey": {
+                        "$ref": "#/definitions/commonproperties/EnvironmentKey"
+                    },
+                    "AuthorizationType": {
+                        "description": "Type of Authorization to be used for this spoke.",
+                        "default": "Other",
+                        "enum": [
+                            "Other",
+                            "OAuth1",
+                            "OAuth1A",
+                            "OAuth2",
+                            "UserNamePassword",
+                            "Ftp"
+                        ]
+                    },
+                    "Environments": {
+                        "type": "object",
+                        "properties": {
+                            "default": {
+                                "$ref": "#/definitions/environmentproperties/other"
+                            }
+                        },
+                        "required": [
+                            "default"
+                        ],
+                        "additionalProperties": {
+                            "$ref": "#/definitions/environmentproperties/other"
+                        }
+                    },
+                    "Throttle": {
+                        "$ref": "#/definitions/throttling"
+                    }
+                },
+                "required": [
+                    "AuthorizationType",
+                    "Environments"
+                ]
+            },
+            "oauth1a": {
+                "type": "object",
+                "properties": {
+                    "$schema": {
+                        "type": "string",
+                        "default": "https://sandbox.onesaas.com/schemas/1.0/connection.json",
+                        "enum": [
+                            "https://sandbox.onesaas.com/schemas/1.0/connection.json"
+                        ]
+                    },
+                    "ConnectionKey": {
+                        "$ref": "#/definitions/commonproperties/ConnectionKey"
+                    },
+                    "EnvironmentKey": {
+                        "$ref": "#/definitions/commonproperties/EnvironmentKey"
+                    },
+                    "AuthorizationType": {
+                        "description": "Spoke will using the standard OAuth1A protocol.",
+                        "default": "OAuth1A",
+                        "enum": [
+                            "OAuth1A"
+                        ]
+                    },
+                    // deafult Environment only for OAuth1A as the URL is always user entered
+                    "Environments": {
+                        "type": "object",
+                        "properties": {
+                            "default": {
+                                "$ref": "#/definitions/environmentproperties/oauth1a"
+                            }
+                        },
+                        "required": [
+                            "default"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "Throttle": {
+                        "$ref": "#/definitions/throttling"
+                    }
+                },
+                "required": [
+                    "ConnectionType",
+                    "Environments"
+                ]
+            },
+            "oauth2": {
+                "type": "object",
+                "properties": {
+                    "$schema": {
+                        "type": "string",
+                        "default": "https://sandbox.onesaas.com/schemas/1.0/connection.json",
+                        "enum": [
+                            "https://sandbox.onesaas.com/schemas/1.0/connection.json"
+                        ]
+                    },
+                    "ConnectionKey": {
+                        "$ref": "#/definitions/commonproperties/ConnectionKey"
+                    },
+                    "EnvironmentKey": {
+                        "$ref": "#/definitions/commonproperties/EnvironmentKey"
+                    },
+                    "AuthorizationType": {
+                        "description": "Spoke will using the standard OAuth2 protocol.",
+                        "default": "OAuth2",
+                        "enum": [
+                            "OAuth2",
+                            "OpenIDConnect_OAuth2"
+                        ]
+                    },
+                    "AuthorizationContentType": {
+                        "description": "Type of content to be sent for the Authorize step. ",
+                        "default": "application/x-www-form-urlencoded",
+                        "enum": [
+                            "application/x-www-form-urlencoded",
+                            "application/json"
+                        ]
+                    },
+                    "Environments": {
+                        "type": "object",
+                        "properties": {
+                            "default": {
+                                "$ref": "#/definitions/environmentproperties/oauth2"
+                            }
+                        },
+                        "required": [
+                            "default"
+                        ],
+                        "additionalProperties": {
+                            "$ref": "#/definitions/environmentproperties/oauth2"
+                        }
+                    },
+                    "Throttle": {
+                        "$ref": "#/definitions/throttling"
+                    },
+                    "Operations": {
+                        "properties": {
+                            "system:whoami": {
+                                "$ref": "#/definitions/whoami"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "ConnectionType",
+                    "Environments"
+                ]
+            },
+            "usernamepassword": {
+                "type": "object",
+                "properties": {
+                    "$schema": {
+                        "type": "string",
+                        "default": "https://sandbox.onesaas.com/schemas/1.0/connection.json",
+                        "enum": [
+                            "https://sandbox.onesaas.com/schemas/1.0/connection.json"
+                        ]
+                    },
+                    "ConnectionKey": {
+                        "$ref": "#/definitions/commonproperties/ConnectionKey"
+                    },
+                    "EnvironmentKey": {
+                        "$ref": "#/definitions/commonproperties/EnvironmentKey"
+                    },
+                    "AuthorizationType": {
+                        "description": "Spoke will using the basic HTTP(s) protocol with UserName/Password Authorization.",
+                        "default": "UserNamePassword",
+                        "enum": [
+                            "UserNamePassword"
+                        ]
+                    },
+                    "Environments": {
+                        "type": "object",
+                        "properties": {
+                            "default": {
+                                "$ref": "#/definitions/environmentproperties/usernamepassword"
+                            }
+                        },
+                        "required": [
+                            "default"
+                        ],
+                        "additionalProperties": {
+                            "$ref": "#/definitions/environmentproperties/usernamepassword"
+                        }
+                    },
+                    "Throttle": {
+                        "$ref": "#/definitions/throttling"
+                    }
+                },
+                "required": [
+                    "ConnectionType",
+                    "Environments"
+                ]
+            },
+            "other": {
+                "type": "object",
+                "properties": {
+                    "$schema": {
+                        "type": "string",
+                        "default": "https://sandbox.onesaas.com/schemas/1.0/connection.json",
+                        "enum": [
+                            "https://sandbox.onesaas.com/schemas/1.0/connection.json"
+                        ]
+                    },
+                    "ConnectionKey": {
+                        "$ref": "#/definitions/commonproperties/ConnectionKey"
+                    },
+                    "EnvironmentKey": {
+                        "$ref": "#/definitions/commonproperties/EnvironmentKey"
+                    },
+                    "AuthorizationType": {
+                        "description": "Spoke will using the basic HTTP(s) protocol with some other type of Authorization (e.g. API Key, Custom Headers).",
+                        "default": "Other",
+                        "enum": [
+                            "Other"
+                        ]
+                    },
+                    "Environments": {
+                        "type": "object",
+                        "properties": {
+                            "default": {
+                                "$ref": "#/definitions/environmentproperties/other"
+                            }
+                        },
+                        "required": [
+                            "default"
+                        ],
+                        "additionalProperties": {
+                            "$ref": "#/definitions/environmentproperties/other"
+                        }
+                    },
+                    "Throttle": {
+                        "$ref": "#/definitions/throttling"
+                    }
+                },
+                "required": [
+                    "ConnectionType",
+                    "Environments"
+                ]
+            },
+            "ftp": {
+                "type": "object",
+                "properties": {
+                    "$schema": {
+                        "type": "string",
+                        "default": "https://sandbox.onesaas.com/schemas/1.0/connection.json",
+                        "enum": [
+                            "https://sandbox.onesaas.com/schemas/1.0/connection.json"
+                        ]
+                    },
+                    "ConnectionKey": {
+                        "$ref": "#/definitions/commonproperties/ConnectionKey"
+                    },
+                    "EnvironmentKey": {
+                        "$ref": "#/definitions/commonproperties/EnvironmentKey"
+                    },
+                    "AuthorizationType": {
+                        "description": "Spoke will using the FTP/FTP/SFTP protocol.",
+                        "default": "Ftp",
+                        "enum": [
+                            "Ftp"
+                        ]
+                    },
+                    "Environments": {
+                        "type": "object",
+                        "properties": {
+                            "default": {
+                                "$ref": "#/definitions/environmentproperties/ftp"
+                            }
+                        },
+                        "required": [
+                            "default"
+                        ],
+                        "additionalProperties": {
+                            "$ref": "#/definitions/environmentproperties/ftp"
+                        }
+                    },
+                    "Throttle": {
+                        "$ref": "#/definitions/throttling"
+                    }
+                },
+                "required": [
+                    "ConnectionType",
+                    "Environments"
+                ]
+            }
+        },
+        "environmentproperties": {
+            "oauth1": {
+                // OAuth1
+                "type": "object",
+                "properties": {
+                    "AuthorizeUrl": {
+                        "description": "Url where the user will be redirected to Authorize the connection.",
+                        "type": "string"
+                    },
+                    "AccessTokenUrl": {
+                        "description": "Url that will generate an OAuth1 AccessToken before the OAuth1 process starts.",
+                        "type": "string"
+                    },
+                    "RequestTokenUrl": {
+                        "type": "string"
+                    },
+                    "RefreshTokenUrl": {
+                        "type": "string"
+                    },
+                    "BaseUrl": {
+                        "description": "Base URL for all the API calls.",
+                        "type": "string"
+                    },
+                    "ConsumerKey": {
+                        "description": "OAuth1 Consumer Key.",
+                        "type": "string"
+                    },
+                    "ConsumerSecret": {
+                        "description": "OAuth1 Consumer Secret.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "BaseUrl",
+                    "AuthorizeUrl",
+                    "AccessTokenUrl",
+                    "RequestTokenUrl"
+                ]
+            },
+            "oauth1a": {
+                // OAuth1a
+                "type": "object",
+                "properties": {
+                    "AuthorizeUrl": {
+                        "description": "Url where the user will be redirected to Authorize the connection.",
+                        "type": "string",
+                        "default": "{{domain}}"
+                    },
+                    "AccessTokenUrl": {
+                        "description": "Url that will generate an OAuth1 AccessToken before the OAuth1 process starts.",
+                        "type": "string"
+                    },
+                    "RequestTokenUrl": {
+                        "type": "string"
+                    },
+                    "RefreshTokenUrl": {
+                        "type": "string"
+                    },
+                    "BaseUrl": {
+                        "description": "Base URL for all the API calls.",
+                        "type": "string",
+                        "default": "{{domain}}"
+                    },
+                    "SignatureMethod": {
+                        "enum": [
+                            "HMAC-SHA256",
+                            "HMAC-SHA1"
+                        ]
+                    }
+                },
+                "required": [
+                    "BaseUrl",
+                    "AuthorizeUrl",
+                    "AccessTokenUrl",
+                    "RequestTokenUrl"
+                ]
+            },
+            "oauth2": {
+                // OAuth2
+                "type": "object",
+                "properties": {
+                    "AuthorizeUrl": {
+                        "description": "Url where the user will be redirected to Authorize the connection.",
+                        "type": "string"
+                    },
+                    "RequestTokenUrl": {
+                        "description": "Url to call to exchange the 'code' received during the user Authorize for an 'access_token' and optionally a 'refresh_token'.",
+                        "type": "string"
+                    },
+                    "RefreshTokenUrl": {
+                        "description": "Url to call to request a new 'access_token' based on a 'refresh_token'.",
+                        "type": "string"
+                    },
+                    "ReturnUrl": {
+                        "description": "Custom return url. Best if you don't change this and leave the one built automatically.",
+                        "type": "string"
+                    },
+                    "BaseUrl": {
+                        "description": "Base URL for all the API calls.",
+                        "type": "string"
+                    },
+                    "GrantType": {
+                        "default": "authorization_code",
+                        "enum": [
+                            "authorization_code",
+                            "password"
+                        ]
+                    },
+                    "State": {
+                        "type": "string"
+                    },
+                    "Scope": {
+                        "type": "string"
+                    },
+                    "RefreshTokenFormat": {
+                        "default": "application/x-www-form-urlencoded",
+                        "enum": [
+                            "application/x-www-form-urlencoded",
+                            "application/json"
+                        ]
+                    },
+                    "ConsumerKey": {
+                        "description": "OAuth2 Consumer Key.",
+                        "type": "string"
+                    },
+                    "ConsumerSecret": {
+                        "description": "OAuth2 Consumer Secret.",
+                        "type": "string"
+                    },
+                    "UseAuthorizeHeaderForConsumerKeys": {
+                        "description": "Send the ConsumerKey:ConsumerSecret in the Authorize: Basic [...] header.",
+                        "default": false,
+                        "type": "boolean"
+                    },
+                    "GetRequestTokenRequestType": {
+                        "description": "Request Token should be a GET request (instead of the standard POST).",
+                        "default": false,
+                        "type": "boolean"
+                    },
+                    "AuthorizationContentType": {
+                        "description": "Type of content to be sent for the Authorize step.",
+                        "default": "application/json",
+                        "enum": [
+                            "application/x-www-form-urlencoded",
+                            "application/json"
+                        ]
+                    },
+                    "TokenType": {
+                        "description": "Type of token. Default is Bearer. Will be sent in the Authorize header before the Token.",
+                        "type": "string",
+                        "default": "Bearer"
+                    },
+                    "ConfigurationProperties": {
+                        "$ref": "#/definitions/configurationproperties"
+                    },
+                    "Headers": {
+                        "$ref": "#/definitions/headers"
+                    }
+                },
+                "required": [
+                    "BaseUrl",
+                    "RequestTokenUrl"
+                ]
+            },
+            "usernamepassword": {
+                // Basic Http
+                "type": "object",
+                "properties": {
+                    "BaseUrl": {
+                        "description": "Base URL for all the API calls.",
+                        "type": "string"
+                    },
+                    "Authentication": {
+                        "default": "Basic",
+                        "enum": [
+                            "Basic",
+                            "UserPass2Token"
+                        ]
+                    },
+                    "ValidateUrl": {
+                        "description": "URL to call with the username & password in the Authorize header to validate the user & password. The url should respond with 200 OK if the user is authorized.",
+                        "type": "string"
+                    },
+                    "ResponseFormat": {
+                        "type": "string",
+                        "default": "default",
+                        "description": "Type of response returned from the ValidateUrl. 'default' will only listen for 200 OK. 'json' will parse the response and store it as {{authproperties}}. 'keyvalue' will expect a response in bash format Key=Value.",
+                        "enum": [
+                            "default",
+                            "json",
+                            "keyvalue"
+                        ]
+                    },
+                    "StoreUserPassword": {
+                        "description": "Flag to tell OneSaas whenever to store (or not) the entered user/password.",
+                        "type": "boolean",
+                        "default": true
+                    }
+                },
+                "required": [
+                    "BaseUrl"
+                ]
+            },
+            "other": {
+                // Basic Http with other authorization
+                "type": "object",
+                "properties": {
+                    "BaseUrl": {
+                        "description": "Base URL for all the API calls.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "BaseUrl"
+                ]
+            },
+            "ftp": {
+                "type": "object",
+                "properties": {
+                    "ftp:server": {
+                        "description": "FTP/FTPS/SFTP server. This should be a complete Uri including the schema ftp://myserver.com, ftps://myserver.com or sftp://myserver.com",
+                        "type": "string"
+                    },
+                    "ftp:username": {
+                        "description": "UserName used to connect to the FTP Server.",
+                        "type": "string"
+                    },
+                    "ftp:password": {
+                        "description": "Password used to connect to the FTP Server.",
+                        "type": "string"
+                    },
+                    "ftp:connectiontype": {
+                        "description": "(FTPS only) Type of connection: Active, Passive ...",
+                        "default": "AutoPassive",
+                        "enum": [
+                            "AutoPassive",
+                            "PASV",
+                            "PASVEX",
+                            "EPSV",
+                            "AutoActive",
+                            "PORT",
+                            "EPRT"
+                        ]
+                    },
+                    "ftp:encryptionmode": {
+                        "description": "(FTPS only) Type of encryption.",
+                        "default": "Explicit",
+                        "enum": [
+                            "None",
+                            "Implicit",
+                            "Explicit"
+                        ]
+                    },
+                    "ftp:sslprotocols": {
+                        "description": "(FTPS only) Type of SSL encryption.",
+                        "default": "SSL3|Tls|Tsl11|Tls12",
+                        "enum": [
+                            "None",
+                            "Ssl2",
+                            "Ssl3",
+                            "Tls",
+                            "Tls11",
+                            "Tls12"
+                        ]
+                    },
+                    "ftp:rsakey": {
+                        "description": "(SFTP only) Server RSA Key.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "ftp:server"
+                ]
+            }
+        },
+        "throttling": {
+            "type": "object",
+            "oneOf": [
+                {
+                    "properties": {
+                        "UnitOfTime": {
+                            "default": "Second",
+                            "enum": [
+                                "Second",
+                                "Minute"
+                            ]
+                        },
+                        "MaxCallsPerUOT": {
+                            "type": "integer"
+                        },
+                        "MaxSimultaneousCalls": {
+                            "type": "integer"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "commonproperties": {
+            "ConnectionKey": {
+                "description": "Key that will be used to uniquely identity this connection. You can use {{authurl: _ }} to pick any query string parameters received during initial connect.",
+                "type": "string"
+            },
+            "EnvironmentKey": {
+                "description": "Key that will be used to uniquely identity which environment to use. If this is missing the 'default' environment is used. You can pass this in the provision url to help OneSaas select between environments.",
+                "type": "string"
+            }
+        },
+        "configurationproperties": {
+            "description": "You can define any custom configuration properties that are build during the connection setup. E.g. you can capture auth_url properties as configuration properties.",
+            "type": "object"
+        },
+        "whoami": {
+            "description": "Help identify the current logged in user and the current account.",
+            "properties": {
+                "Output": {
+                    "description": "Result of the whoami operation",
+                    "properties": {
+                        "ConnectionKey": {
+                            "description": "Unique identifier for the current connection/account. The currently logged in user will receive immediate access to this account & connection.",
+                            "type": "string"
+                        },
+                        "User": {
+                            "description": "The details of the currently logged in user.",
+                            "$ref": "#/definitions/user"
+                        }
+                    },
+                    "required": [
+                        "ConnectionKey",
+                        "User"
+                    ]
+                }
+            },
+            "additionalProperties": true,
+            "required": [
+                "Output"
+            ]
+        },
+        "user": {
+            "properties": {
+                "Type": {
+                    "description": "Type of login.",
+                    "type": "string",
+                    "default": "Custom",
+                    "enum": [
+                        "Custom",
+                        "OAuth2Company"
+                    ]
+                },
+                "DisplayName": {
+                    "description": "Display Name for this user.",
+                    "type": "string"
+                },
+                "Email": {
+                    "description": "Email address for this user.",
+                    "type": "string"
+                },
+                "Identifier": {
+                    "description": "Unique identifier of the user.",
+                    "type": "string"
+                },
+                "ProviderUrl": {
+                    "description": "URL for the provider (service).",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Identifier"
+            ]
+        },
+        "headers": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        }
+    }
+}

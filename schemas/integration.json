@@ -1,0 +1,114 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas integration.json files.",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/integration.json",
+            "enum": [
+                "https://sandbox.onesaas.com/schemas/1.0/integration.json"
+            ]
+        },
+        "Categories": {
+            "type": "object",
+            "properties": {
+                "*": {
+                    "description": "Compatibility of your spoke with any other spokes.",
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "enum": [
+                                    "*"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "Accounting": {
+                    "description": "Compatibility of your spoke with Accounting spokes.",
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "enum": [
+                                    "*",
+                                    "myobaccountright",
+                                    "myobessentials",
+                                    "quickbooksonline",
+                                    "saasu",
+                                    "sageone",
+                                    "sageoneglobal",
+                                    "xero"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "eCommerce": {
+                    "description": "Compatibility of your spoke with eCommerce spokes.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "*",
+                            "bigcommerce",
+                            "ebay",
+                            "magento",
+                            "opencart",
+                            "shopify",
+                            "woocommerce"
+                        ]
+                    }
+                },
+                "Billing & Invoicing": {
+                    "description": "Compatibility of your spoke with Billing & Invoicing spokes.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "*",
+                            "freshbooks"
+                        ]
+                    }
+                },
+                "Email Marketing": {
+                    "description": "Compatibility of your spoke with Email Marketing spokes.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "*",
+                            "mailchimp"
+                        ]
+                    }
+                },
+                "CRM": {
+                    "description": "Compatibility of your spoke with CRM spokes.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "*",
+                            "zohocrm",
+                            "salesforce"
+                        ]
+                    }
+                },
+                "Point Of Sale": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "*"
+                        ]
+                    }
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}

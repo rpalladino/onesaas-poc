@@ -1,0 +1,27 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas Payment Transformations",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/payment.transform.json",
+            "enum": [
+                "https://sandbox.onesaas.com/schemas/1.0/payment.transform.json"
+            ]
+        },
+        "system:retrieve": {
+            "$ref": "payment.json#"
+        },
+        "system:create": {},
+        "system:update": {},
+        "system:delete": {}
+    },
+    "additionalProperties": {
+        "oneOf": [
+            {
+                "type": "object"
+            }
+        ]
+    }
+}

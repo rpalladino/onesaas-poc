@@ -1,0 +1,100 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas Classifications",
+    "oneOf": [
+        {
+            "$ref": "#/definitions/classification"
+        }
+    ],
+    "definitions": {
+        "classification": {
+            "properties": {
+                "RemoteUid": {
+                    "description": "Unique identifier of this entity in the remote system.",
+                    "type": "string"
+                },
+                "Code": {
+                    "type": "string"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "SubType": {
+                    "type": "string"
+                },
+                "IsActive": {
+                    "oneOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "ClassificationType": {
+                    "type": "string",
+                    "enum": [
+                        "Location",
+                        "LineItemTrackingCategory",
+                        "LineItemTrackingCode",
+                        "ShippingMethod",
+                        "Shift",
+                        "PaymentMethod",
+                        "PaymentMethodType",
+                        "Warehouse",
+                        "Company",
+                        "TransactionStatus"
+                    ]
+                },
+                "Values": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/childclassification"
+                    }
+                }
+            },
+            "patternProperties": {
+                "(Values)\\|.*": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/childclassification"
+                        }
+                    ]
+                }
+            }
+        },
+        "childclassification": {
+            "RemoteUid": {
+                "description": "Unique identifier of this entity in the remote system.",
+                "type": "string"
+            },
+            "Code": {
+                "type": "string"
+            },
+            "Name": {
+                "type": "string"
+            },
+            "SubType": {
+                "type": "string"
+            },
+            "IsActive": {
+                "oneOf": [
+                    {
+                        "type": "boolean"
+                    },
+                    {
+                        "type": "string"
+                    }
+                ]
+            },
+            "ClassificationType": {
+                "type": "string",
+                "enum": [
+                    "LineItemTrackingCode"
+                ]
+            }
+        }
+    }
+}

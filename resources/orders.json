@@ -1,0 +1,33 @@
+{
+	// Orders (transaction:orders) resource definition
+	// Docs: https://sandbox.onesaas.com/docs/#/docs/resources/index
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/resource.json",
+	// Name of the resource
+	"Name": "transaction:orders",
+	// Headers Accept type
+	"Accept": "application/json",
+	// https://sandbox.onesaas.com/docs/#/api/resources/operations
+	"system:retrieve": {
+		// Configure Pagination https://sandbox.onesaas.com/docs/#/api/resources/pagination
+		// "@@paging": {
+		// 	"Type": "page"
+		// },
+		// Retrieve the list of orders from {{BaseUrl}}/orders
+		// This assumes that the response payload is in format [{ ... }, { ... }]
+		// If response is in format { "results": [{ ... }, { ... }] } - you select the child array using |select($.Body.results[*])|
+		"$$orders|select($.Body)|http(GET)": {
+			// https://sandbox.onesaas.com/docs/#/api/resources/protocols/http
+			"Path": "/orders",
+			// If you configured paging you can add the current page details to the url or the query string
+			// "Query": {
+			// 	"page": "$$paging.Page",
+			// 	// When running the first time there is no $$LastUpdated so it's best to filter and retrieve orders only after BusinessFile_StartDate
+			// 	"created_at|when(!$$LastUpdated)": "@.Config('BusinessFile_StartDate')|datetime:iso",
+			// 	// If we have a $$LastUpdated then retrieve all changes since that timestamp
+			// 	"last_updated|when($$LastUpdated)": "$$LastUpdated|datetime:iso"
+			// }
+		},
+		// Return the list of orders
+		"Output": "$$orders"
+	}
+}

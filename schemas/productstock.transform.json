@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas Product Stock Transformations",
+    "type": "object",
+    "properties": {
+        "system:retrieve": {
+            "$ref": "productstock.json#"
+        },
+        "system:update": {
+            "type": "object",
+            "additionalProperties": true
+        }
+    }
+}

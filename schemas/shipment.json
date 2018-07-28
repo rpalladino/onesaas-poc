@@ -1,0 +1,153 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas Transaction Shipment (or parcel)",
+    "type": "object",
+    "oneOf": [
+        {
+            "$ref": "#/definitions/shipment"
+        },
+        {
+            "properties": {
+                "~Items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/shipment"
+                    }
+                }
+            }
+        }
+    ],
+    "definitions": {
+        "shipment": {
+            "properties": {
+                "$schema": {
+                    "type": "string",
+                    "default": "https://sandbox.onesaas.com/schemas/1.0/shipment.json",
+                    "enum": [
+                        "https://sandbox.onesaas.com/schemas/1.0/shipment.json"
+                    ]
+                },
+                "RemoteUid": {
+                    "description": "Unique identifier of this entity in the remote system.",
+                    "type": "string"
+                },
+                "ShippingMethod": {
+                    "description": "Shipment Metho.",
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "classification.json#"
+                        }
+                    ]
+                },
+                "Date": {
+                    "type": "string"
+                },
+                "Code": {
+                    "description": "Unique Shipment (Parcel) Tracking Code.",
+                    "type": "string"
+                },
+                "TrackingUrl": {
+                    "type": "string"
+                },
+                "CarrierName": {
+                    "type": "string"
+                },
+                "CarrierCode": {
+                    "type": "string"
+                },
+                "Notes": {
+                    "type": "string"
+                },
+                "GrossWeight": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ]
+                },
+                "GrossWeightUom": {
+                    "type": "string"
+                },
+                "Length": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ]
+                },
+                "LengthUom": {
+                    "type": "string"
+                },
+                "Height": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ]
+                },
+                "HeightUom": {
+                    "type": "string"
+                },
+                "Width": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ]
+                },
+                "WidthUom": {
+                    "type": "string"
+                },
+                "DangerousGoods": {
+                    "oneOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "AuthorityToLeave": {
+                    "oneOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "DeclaredValue": {
+                    "oneOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "Transaction": {
+                    "description": "Reference back to the owner transaction.",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

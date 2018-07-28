@@ -1,0 +1,9 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for OneSaas Entity Sync Report Transformations",
+    "properties": {
+        "system:retrieve": {
+            "$ref": "entitysyncreport.json#"
+        }
+    }
+}

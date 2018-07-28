@@ -1,0 +1,195 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas configurationproperties.json files",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "default": "https://sandbox.onesaas.com/schemas/1.0/properties.json",
+            "enum": [
+                "https://sandbox.onesaas.com/schemas/1.0/properties.json",
+                "https://localdev.onesaas.com:9090/schemas/1.0/properties.json"
+            ]
+        },
+        "ConnectionProperties": {
+            "description": "The spoke-instance properties. Some might be UI properties some might be Properties received via a configurationproperty:[name] resource (e.g. store information received via a resource). These properties belong to the spoke instance and are shared across all your workflows.",
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/cp"
+            }
+        },
+        "WorkflowProperties": {
+            "description": "The properties that are available in the UI for configuration at the workflow level. Each separate workflow will have their own list of workflow properties.",
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/cp"
+            }
+        },
+        "AuthProperties": {
+            "description": "The properties required to start the authorization process. They will be displayed when the user tries to start a connection to another service. For example here you can have the application {{domain}}, username or api keys.",
+            "additionalProperties": {
+                "$ref": "#/definitions/cp"
+            }
+        },
+        "PostAuthProperties": {
+            "description": "The properties required after the authorization process is completed that the user needs to select in order to finalize the authorization. E.g. The user needs to select a company that he wants to integrate after he did the OAuth2 process.",
+            "additionalProperties": {
+                "$ref": "#/definitions/cp"
+            }
+        },
+        "UiProperties": {
+            "description": "Internal use - for now.",
+            "type": "object"
+        }
+    },
+    "additionalProperties": false,
+    "definitions": {
+        "cp": {
+            "description": "Configuration Property.",
+            "type": "object",
+            "properties": {
+                "Validators": {
+                    "description": "List of validators that should apply to this property.",
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "description": "Validate that the configuration property is a valid resource of a defined type. E.g. financialaccount:accounts.",
+                                "type": "object",
+                                "properties": {
+                                    "resource:type": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            {
+                                "description": "Validate the property is entered by the end-customer.",
+                                "type": "object",
+                                "properties": {
+                                    "required": {
+                                        "type": "boolean",
+                                        "default": true
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "additionalItems": false
+                },
+                "DefaultValue": {
+                    "description": "Default value for this property.",
+                    "anyOf": [
+                        {
+                            "type": "object"
+                        },
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "Ui": {
+                    "description": "Defined the way the property will be rendered in the UI. https://sandbox.onesaas.com/docs/#/docs/config/ui",
+                    "type": "object"
+                },
+                "IsSensitive": {
+                    "description": "Mark this property as Sensitive. The value of sensitive properties is never sent back to the UI and they are kept secure.",
+                    "type": "boolean"
+                },
+                "Events": {
+                    "$ref": "#/definitions/events"
+                }
+            },
+            "additionalProperties": false
+        },
+        "events": {
+            "description": "Events to be triggered when a property has changed.",
+            "type": "object",
+            "properties": {
+                "property:changed": {
+                    "description": "Execute event when property was changed - 1",
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "object",
+                                "description": "Rename the connection to this new name [SpokeType] - [Name]",
+                                "properties": {
+                                    "connection:rename": {
+                                        "description": "Format for the new connection name",
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "connection.timezone:update": {
+                                        "description": "Update the timezone for this connection.",
+                                        "type": "string",
+                                        "default": "iana",
+                                        "enum": [
+                                            "iana"
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "file.timezone:update": {
+                                        "description": "Update the timezone for this account.",
+                                        "type": "string",
+                                        "default": "iana",
+                                        "enum": [
+                                            "iana"
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "reset:connectionerrors": {
+                                        "description": "Reset connection errors - value is the Error Code to be reset.",
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "reset:workflowerrors": {
+                                        "description": "Reset workflow errors - value is the Error Code to be reset.",
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "owneruser:update": {
+                                        "description": "Update the details of the owner user.",
+                                        "type": "string",
+                                        "enum": [
+                                            "DisplayName",
+                                            "Email"
+                                        ]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

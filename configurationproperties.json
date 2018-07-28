@@ -1,0 +1,42 @@
+{
+	// List of configuration properties for the end-customers
+	// Docs: https://sandbox.onesaas.com/docs/#/api/config/properties:usingconfigurationproperties
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/properties.json",
+	// End-Customer configurable properties
+	// Docs: https://sandbox.onesaas.com/docs/#/api/config/properties:connectionproperties
+	"ConnectionProperties": {},
+	// End-Customer configurable properties for each workflow
+	// Docs: https://sandbox.onesaas.com/docs/#/api/config/properties:connectionproperties
+	"WorkflowProperties": {},
+	// AuthProperties are properties that are presented to the user BEFORE the Authorization Process starts
+	// For example you can ask the user for the Domain/Url of their site, or some other identification
+	// If you leave this empty the Auth (as defined in the connection.json) will start when triggered without any prompts
+	// https://sandbox.onesaas.com/docs/#/api/config/properties/properties:authproperties
+	"AuthProperties": {},
+	// PostAuthProperties are properties that are presented to the user AFTER the Authorization Process starts
+	// For example you can ask the user to select a specific site/store from a list of sites he has access to
+	// https://sandbox.onesaas.com/docs/#/api/config/properties:postauthproperties
+	"PostAuthProperties": {},
+	// In UI Properties you can configure the labels of the various elements on the Connect page
+	"UiProperties": {
+		"Ui": {
+			"plugin.connect": [
+				{
+					"topDescription": "In order to connect {{partner.DisplayName}} to your {{type.DisplayName}} you need to Sign In to your {{type.DisplayName}} and approve the {{partner.DisplayName}} connectivity."
+				},
+				{
+					"customerInstructions": "Login to {{type.DisplayName}} and approve connectivity."
+				},
+				{
+					"reconnectInstructions1": "You have previously connected {{partner.DisplayName}} to {{connection.DisplayName}}."
+				},
+				{
+					"reconnectInstructions2": "Login to {{type.DisplayName}} and approve connectivity."
+				},
+				{
+					"customerStartAuthAction": "Connect to {{type.DisplayName}}"
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,81 @@
+{
+	// Transformations for the resource transaction:orders
+	// Docs: https://sandbox.onesaas.com/docs/#/docs/transform/index
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/transaction.transform.json",
+	// Transform the entity received from the Spoke into a OneSaas entity (Transaction)
+	"system:retrieve": {
+		// On the Left are the OneSaas properties for the Transaction (schema https://sandbox.onesaas.com/schemas/1.0/transaction.json)
+		// On the Rigth is the JsonPath selector to extract the value from the received entity
+		// from this sample received payload: `{ "order_number": "A123" ... } the $.order_number is extracted into the OneSaas Transaction.Number
+		// CRITICAL: OneSaas needs to know the unique ID of this order in the remote system
+		"RemoteUid": "$.id",
+		"Number": "$.order_number",
+		"CurrencyCode": "$.currency",
+		// Save the total
+		"Total": "$.total_price",
+		// @.Date.Import(...) - import the data and adjust to the correct timezone
+		"Date": "@.Date.Import($.created_at)",
+		// |when(condition) - Create the "Contact" field when the condition is true
+		"Contact": {
+			// CRITICAL: OneSaas needs to know the unique ID of this customer in the remote system
+			"RemoteUid": "$.customer.id",
+			"GivenName": "$.customer.first_name",
+			"FamilyName": "$.customer.last_name",
+			"OrganizationName": "$.customer.company",
+			"EmailWork": "$.customer.email"
+		},
+		// for each line in the $.line_items received array generate a new item in the OneSaas Transaction "Items" array
+		"Items|foreach($$line in $.line_items)": [
+			{
+				// Generate a new Product (recommended)
+				"Product": {
+					// CRITICAL: OneSaas needs to know the unique ID of this product in the remote system (the SKU if the SKU is unique)
+					"RemoteUid": "$$line.sku",
+					"Code": "$$line.sku",
+					"Name": "$$line.name"
+				},
+				"ProductCode": "$$line.sku",
+				"ProductName": "$$line.name ?? $$line.title",
+				// Both UnitPrice & UnitPriceExTax should be filled in (if possible)
+				"UnitPrice": "$$line.price",
+				"UnitPriceExTax": "$$line.price",
+				"Quantity": "$$line.quantity",
+				// Save the DiscountAmount (or DiscountPercentage)
+				"DiscountAmount": "$$line.total_discount",
+				// Attach a tax to this line
+				"Tax": {
+					"Code": "$$line.title",
+					"Name": "$$line.title",
+					"Rate": "$$line.rate"
+				}
+			}
+		],
+		"Payments|foreach($$payment in $.payments)": [
+			{
+				// CRITICAL: OneSaas needs to know the unique ID of this payment in the remote system
+				// If you have no payment id use the OrderId + Index (e.g. $$paymentIndex) "$.id - $$paymentIndex"
+				"RemoteUid": "$.payment_id",
+				"Amount": "$.paid_amount",
+				// Account contains the payment account/method details
+				"Account": {
+					// CRITICAL: OneSaas needs to know the unique ID of this payment method in the remote system
+					"RemoteUid": "$.payment_method",
+					"Name": "$.payment_method",
+					"Code": "$.payment_method",
+					"IsActive": true,
+					"AcceptsPayments": true
+				},
+				"Date|when($.created_at)": "$$dateCreated"
+			}
+		],
+		// OneSaas Extensions
+		"!run": [
+			// apply invoice number prefix
+			"@.Transaction.ApplyInvoiceNumberPrefix($$Result, @.Config('OrderNumberPrefix'))",
+			// Calculate taxes
+			"@.Transaction.CalculateTaxes($$Result)",
+			// Validate the total (compares the Total to the CalculatedTotal) and create adjustment item if the totals don't match
+			"@.Transaction.ValidateTotal($$Result)"
+		]
+	}
+}

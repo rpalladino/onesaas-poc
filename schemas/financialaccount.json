@@ -1,0 +1,75 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for a OneSaas Financial Account",
+    "type": "object",
+    "properties": {
+        "RemoteUid": {
+            "description": "Unique identifier of this entity in the remote system.",
+            "type": "string"
+        },
+        "Code": {
+            "type": "string"
+        },
+        "Name": {
+            "type": "string"
+        },
+        "Description": {
+            "type": "string"
+        },
+        "AcceptsPayments": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "IsActive": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "IsBankAccount": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "CategoryType": {
+            "enum": [
+                "Income",
+                "OtherIncome",
+                "Asset",
+                "Expense",
+                "OtherExpense",
+                "Equity",
+                "Liability",
+                "CostOfSales",
+                "Depreciation",
+                "CurrentAsset",
+                "OtherAsset",
+                "AccountsReceivable",
+                "AccountsPayable",
+                "OtherCurrentLiability",
+                "LongTermLiability",
+                "OtherLiability",
+                "InventoryAsset"
+            ]
+        },
+        "OriginalType": {
+            "description": "Original type of the account as defined by the application. Not used by OneSaas but nice to have around for diagnosing purposes.",
+            "type": "string"
+        }
+    }
+}

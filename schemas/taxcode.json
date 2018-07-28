@@ -1,0 +1,101 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas TaxCode",
+    "type": "object",
+    "properties": {
+        "RemoteUid": {
+            "description": "Unique identifier of this entity in the remote system.",
+            "type": "string"
+        },
+        "Code": {
+            "description": "Tax Code (short code). Required when creating new tax codes.",
+            "type": "string"
+        },
+        "Name": {
+            "description": "Name of the tax code.",
+            "type": "string"
+        },
+        "IsActive": {
+            "description": "Active / Not-Active flag (Active is default)",
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "IsCustomCode": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "IsPurchase": {
+            "description": "True if this tax code can be applied to purchases (purchase orders, bills)",
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "IsSale": {
+            "description": "True if this tax code can be applied to sales (sale orders, invoices, quotes)",
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "IsVariable": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "Rate": {
+            "description": "Tax Rate (leave null if this is a variable tax). Rate should be >= 0 && <= 1 (e.g. Rate = 0.1 means 10% tax).",
+            "oneOf": [
+                {
+                    "type": "number"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "DefaultType": {
+            "type": "array",
+            "items": {
+                "enum": [
+                    "DefaultNoTax",
+                    "DefaultTaxIncome",
+                    "DefaultTaxExpense",
+                    "DefaultTaxExemptIncome",
+                    "DefaultTaxExemptExpense"
+                ]
+            }
+        },
+        "TaxRoleType": {
+            "enum": [
+                "Code",
+                "Rate"
+            ]
+        }
+    }
+}

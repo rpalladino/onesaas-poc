@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "title": "JSON Schema for OneSaas Product Transformations",
+    "type": "object",
+    "properties": {
+        "system:retrieve": {
+            "anyOf": [
+                {
+                    "description": "Return one Product.",
+                    "$ref": "product.json#"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "~items": {
+                            "description": "Return a list of Products. Each item has to match one product.",
+                            "type": "array",
+                            "items": [
+                                {
+                                    "$ref": "product.json#"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "patternProperties": {
+                        "(\\~items)\\|(when|foreach).*": {
+                            "description": "Return a list of Products. Each item has to match one product.",
+                            "type": "array",
+                            "items": [
+                                {
+                                    "$ref": "product.json#"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "system:create": {
+            "description": "Convert the OneSaas Model to the destination Product to be used in a system:create operation.",
+            "additionalProperties": true
+        },
+        "system:searchmatch": {
+            "additionalProperties": true
+        },
+        "system:update": {
+            "type": "object",
+            "description": "Convert the OneSaas Model to the destination Product to be used in a system:update operation.",
+            "additionalProperties": true
+        }
+    }
+}

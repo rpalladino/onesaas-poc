@@ -1,0 +1,11 @@
+{
+	// Compatibility list between your spoke and other spokes in the OneSaas ecosystem
+	// Docs: https://sandbox.onesaas.com/docs/#/docs/spoke/integration
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/integration.json",
+	"Categories": {
+		// This spoke is compatible with every other spoke
+		"*": [
+			"*"
+		]
+	}
+}

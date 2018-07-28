@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "JSON Schema for a OneSaas WebHooks",
+    "type": "object",
+    "properties": {
+        "RemoteUid": {
+            "description": "Unique identifier of this entity in the remote system.",
+            "type": "string"
+        },
+        "ResourceName": {
+            "type": "string"
+        },
+        "Url": {
+            "type": "string"
+        },
+        "Topic": {
+            "type": "string"
+        },
+        "IsActive": {
+            "oneOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        }
+    }
+}
