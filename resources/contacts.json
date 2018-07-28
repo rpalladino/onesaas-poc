@@ -6,5 +6,11 @@
 		"Output|select($.Body.contacts[*])|http(GET)": {
 			"Path": "/contacts"
 		}
+	},
+	"system:create": {
+		"$$RemoteUid|select($.Body.contact.id)|http(POST)": {
+			"Path": "/contacts",
+			"Body": "$$Entity"
+		}
 	}
 }
