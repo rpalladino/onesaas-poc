@@ -11,8 +11,8 @@
 	// Unique Guid(s) for this spoke
 	"UniqueKey": "9e876979-5b5a-472c-852e-3eb736d1596c",
 	"PluginKey": "b7d8c725-920d-468f-ac0e-83bdf36d161b",
-	// Spoke Category "eCommerce"
-	"Category": "eCommerce",
+	// Spoke Category "Email Marketing"
+	"Category": "Email Marketing",
 	"Events": {
 		// Definitions of the events can be found in the following:
 		// https://sandbox.onesaas.com/docs/#/api/spokestructure/spoke:standardevents
