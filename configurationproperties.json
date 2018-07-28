@@ -12,7 +12,37 @@
 	// For example you can ask the user for the Domain/Url of their site, or some other identification
 	// If you leave this empty the Auth (as defined in the connection.json) will start when triggered without any prompts
 	// https://sandbox.onesaas.com/docs/#/api/config/properties/properties:authproperties
-	"AuthProperties": {},
+	"AuthProperties": {
+		"ApiUrl": {
+			"Validators": [
+				{
+					"required": "Please enter your API URL."
+				},
+				{
+					"property:type": "url"
+				}
+			],
+			"Ui": {
+				"type": "OptionText",
+				"value": "",
+				"title": "API URL",
+				"inlineHelp": "Your API URL. You can find this URL under Settings > Developer."
+			}
+		},
+		"ApiKey": {
+			"Validators": [
+				{
+					"required": "Please enter your API key."
+				}
+			],
+			"Ui": {
+				"type": "OptionText",
+				"value": "",
+				"title": "API Key",
+				"inlineHelp": "Your API key. You can find this key under Settings > Developer."
+			}
+		}
+	},
 	// PostAuthProperties are properties that are presented to the user AFTER the Authorization Process starts
 	// For example you can ask the user to select a specific site/store from a list of sites he has access to
 	// https://sandbox.onesaas.com/docs/#/api/config/properties:postauthproperties

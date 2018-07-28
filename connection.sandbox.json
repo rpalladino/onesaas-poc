@@ -11,7 +11,7 @@
 		// Other (ApiKey): Comment in and fill in this section
 		// https://sandbox.onesaas.com/docs/#/api/connectiontypes/userpass
 		"default": {
-			"BaseUrl": "https://...",
+			"BaseUrl": "{{ApiUrl}}/api/3/?api_key={{ApiKey}}",
 		}
 		// ------------------------------------------------------------
 		// UserPass: Comment in and fill in this section
