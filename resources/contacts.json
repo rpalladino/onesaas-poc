@@ -1,0 +1,10 @@
+{
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/resource.json",
+	"Name": "contact:contacts",
+	"Accept": "application/json",
+	"system:retrieve": {
+		"Output|select($.Body.contacts[*])|http(GET)": {
+			"Path": "/contacts"
+		}
+	}
+}

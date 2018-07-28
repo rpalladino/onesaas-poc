@@ -1,0 +1,11 @@
+{
+	"$schema": "https://sandbox.onesaas.com/schemas/1.0/transaction.transform.json",
+	"system:retrieve": {
+		"ContactType": "Contact",
+		"RemoteUid": "$.id",
+		"GivenName": "$.firstName",
+		"FamilyName": "$.lastName",
+		"EmailHome": "$.email",
+		"PhoneHome": "$.phone"
+	}
+}

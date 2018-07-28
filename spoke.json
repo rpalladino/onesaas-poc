@@ -25,6 +25,11 @@
 		// Triggered before a Synchronization is about to start.
 		"sync:starting": [],
 		// Triggered before a workflow was activated in the UI by the user.
-		"workflow:statechanged": []
+		"workflow:statechanged": [],
+		"refresh:contacts": [
+			{
+				"resource:retrieveall": "contact:contacts"
+			}
+		]
 	}
 }
